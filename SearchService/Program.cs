@@ -13,6 +13,7 @@ namespace SearchService
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.Configure<ServiceDbSettings>(
     builder.Configuration.GetSection("ServiceDb"));
+            builder.Services.AddCors();
 
             builder.Services.AddSingleton<SearchableService>();
 
@@ -25,6 +26,12 @@ namespace SearchService
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            app.UseCors(options =>
+            {
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+                options.AllowAnyOrigin();
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

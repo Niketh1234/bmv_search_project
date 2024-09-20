@@ -28,22 +28,15 @@ namespace SearchService.Services
              Builders<Searchable>.Filter.Regex("VenueName", new BsonRegularExpression(query, "i")),
              Builders<Searchable>.Filter.Regex("VenueDescription", new BsonRegularExpression(query, "i")),
              Builders<Searchable>.Filter.Regex("VenueCategory", new BsonRegularExpression(query, "i")),
-             Builders<Searchable>.Filter.Regex("ProviderName", new BsonRegularExpression(query, "i")),
              Builders<Searchable>.Filter.Regex("City", new BsonRegularExpression(query, "i"))
          );
-            return _searchablesCollection.Find(filter).ToList();
+            return _searchablesCollection.Find(filter).ToList().Take(10).ToList();
         }
 
         public Searchable Add(Searchable newSearchable)
         {
             _searchablesCollection.InsertOne(newSearchable);
             return newSearchable;
-        }
-
-        public Searchable Update(int id, Searchable updatedSearchable)
-        {
-            _searchablesCollection.ReplaceOne(x => x.VenueId == id, updatedSearchable);
-            return updatedSearchable;
         }
 
     }
